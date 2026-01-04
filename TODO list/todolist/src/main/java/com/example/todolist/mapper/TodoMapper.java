@@ -6,15 +6,17 @@ import java.util.List;
 
 @Mapper
 public interface TodoMapper {
-    List<Todo> findAll();
+    List<Todo> findAll(Long userId);
 
     Todo findById(Long id);
 
-    List<Todo> findByKeyword(String keyword);
+    List<Todo> findByKeyword(Long userId, String keyword);
 
-    int insert(Todo todo);
+    void insert(Todo todo);
 
-    int update(Todo todo);
+    void update(Todo todo);
 
-    int deleteById(Long id);
+    void deleteById(Long id);
+
+    List<Todo> findByUserId(Long userId);
 }

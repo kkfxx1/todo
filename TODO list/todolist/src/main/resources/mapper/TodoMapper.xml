@@ -3,32 +3,34 @@
 <mapper namespace="com.example.todolist.mapper.TodoMapper">
 
 
-    <select id="findAll" resultType="com.example.todolist.model.Todo">
-        SELECT * FROM todo ORDER BY priority DESC, due_date ASC, created_at DESC
+    <select id="findAll" parameterType="java.lang.Long" resultType="com.example.todolist.model.Todo">
+        SELECT * FROM todo
+        WHERE user_id = #{userId}
+        ORDER BY priority DESC, due_date ASC, created_at DESC
     </select>
 
+
+    <select id="findByKeyword" resultType="com.example.todolist.model.Todo">
+        SELECT * FROM todo
+        WHERE user_id = #{userId} AND (
+        title LIKE CONCAT('%', #{keyword}, '%') OR
+        description LIKE CONCAT('%', #{keyword}, '%')
+        )
+        ORDER BY priority DESC, due_date ASC, created_at DESC
+    </select>
 
     <select id="findById" parameterType="java.lang.Long" resultType="com.example.todolist.model.Todo">
         SELECT * FROM todo WHERE id = #{id}
     </select>
 
 
-    <select id="findByKeyword" parameterType="java.lang.String" resultType="com.example.todolist.model.Todo">
-        SELECT * FROM todo
-        WHERE title LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')
-        ORDER BY priority DESC, due_date ASC, created_at DESC
-    </select>
-
-
     <insert id="insert" parameterType="com.example.todolist.model.Todo">
-
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO todo(title, description, category, priority, due_date)
-        VALUES(#{title}, #{description}, #{category}, #{priority}, #{dueDate})
+        INSERT INTO todo(title, description, category, priority, due_date, user_id)
+        VALUES(#{title}, #{description}, #{category}, #{priority}, #{dueDate}, #{userId})
     </insert>
-
 
     <update id="update" parameterType="com.example.todolist.model.Todo">
         UPDATE todo
@@ -43,9 +45,15 @@
         WHERE id = #{id}
     </update>
 
-
     <delete id="deleteById" parameterType="java.lang.Long">
         DELETE FROM todo WHERE id = #{id}
     </delete>
+
+
+    <select id="findByUserId" parameterType="java.lang.Long" resultType="com.example.todolist.model.Todo">
+        SELECT * FROM todo
+        WHERE user_id = #{userId}
+        ORDER BY priority DESC, due_date ASC, created_at DESC
+    </select>
 
 </mapper>

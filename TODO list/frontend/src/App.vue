@@ -1,17 +1,31 @@
 <script setup lang="ts">
-import TodoList from './components/TodoList.vue'
+import { useAuthStore } from '@/stores/authStore'
+import { useRouter } from 'vue-router'
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+const handleLogout = () => {
+  authStore.logout()
+  router.push('/login')
+}
 </script>
 
 <template>
   <div class="app">
-    <el-container>
+    <el-container v-if="authStore.isAuthenticated">
       <el-header>
         <h1>TODO List</h1>
+        <div class="user-info">
+          <el-tag>{{ authStore.user?.username }}</el-tag>
+          <el-button text @click="handleLogout">退出</el-button>
+        </div>
       </el-header>
       <el-main>
-        <TodoList />
+        <router-view />
       </el-main>
     </el-container>
+    <router-view v-else />
   </div>
 </template>
 
@@ -55,5 +69,18 @@ import TodoList from './components/TodoList.vue'
 
 .el-table .is-completed .el-tag {
   opacity: 0.7;
+}
+.el-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #409eff;
+  color: white;
+  padding: 0 20px;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 </style>
