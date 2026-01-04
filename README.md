@@ -28,7 +28,7 @@ MySQL 8.0+
 ```
 cd todolist
 ```
-2.创建数据库并执行sql/init.sql  
+2.创建数据库并执行sql  
 3.修改 src/main/resources/application.yml 中的数据库连接配置  
 4.安装依赖并启动  
  ```
@@ -41,6 +41,10 @@ mvn clean install
 2.npm install  
 3.npm run dev
  ```
+
+初始登录
+账号：admin
+密码：password123
 
 
 
